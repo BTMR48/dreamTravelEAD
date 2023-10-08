@@ -1,0 +1,35 @@
+.sidebar-root {
+  width: 250px;
+  color: #000000; /* Light text */
+  overflow-y: auto;
+  border-radius: 8px; /* Add this for rounded corners */
+  background-color: #eff9fe; /* Add a background color if needed */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 5px;
+  flex: 0 0 250px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.sidebar-item:hover {
+  background-color: #3a90e8; /* Blue color on hover */
+  color: rgb(0, 108, 240);
+}
+
+/* Icon Styling */
+.sidebar-item .MuiListItemIcon-root {
+  color: inherit;
+  min-width: 40px;
+}
+
+/* Text Styling */
+.sidebar-item .MuiListItemText-root {
+  margin: 0;
+}

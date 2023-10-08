@@ -1,0 +1,21 @@
+.header-root {
+  background-color: #0575c0;
+}
+
+.header-toolbar {
+  display: flex;
+  justify-content: space-between; /* This will ensure the title is centered */
+}
+
+.header-title {
+  margin: 0 auto; /* This centers the title */
+}
+
+.log-out-text {
+  margin-right: 10px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
