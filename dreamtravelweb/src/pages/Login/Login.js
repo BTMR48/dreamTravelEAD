@@ -18,11 +18,16 @@ function Login() {
     setErrors({ nic: "", password: "" });
 
     // Validation
+    const nicpattern = /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/m;
     let isValid = true;
     if (!nic.trim()) {
       setErrors((prev) => ({ ...prev, nic: "NIC is required." }));
       isValid = false;
+    } else if (!nicpattern.test(nic)) {
+      setErrors((prev) => ({ ...prev, nic: "NIC invalid." }));
+      isValid = false;
     }
+
     if (!password.trim()) {
       setErrors((prev) => ({ ...prev, password: "Password is required." }));
       isValid = false;

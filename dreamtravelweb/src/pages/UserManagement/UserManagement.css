@@ -1,0 +1,37 @@
+.user-management-title {
+  margin: 10px 0;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Add some space between the title and the "Add User" button */
+.user-management-title + .MuiButton-root {
+  margin-left: 20px;
+}
+
+/* Some additional styles to make the UI look cleaner */
+.TableContainer-root {
+  margin-top: 20px;
+}
+.user-management-title {
+  margin: 10px 0;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Add some space between the title and the "Add User" button */
+.user-management-title + .MuiButton-root {
+  margin-left: 20px;
+}
+
+/* Some additional styles to make the UI look cleaner */
+.TableContainer-root {
+  margin-top: 20px;
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
