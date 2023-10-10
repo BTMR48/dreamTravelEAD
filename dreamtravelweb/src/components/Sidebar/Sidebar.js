@@ -22,29 +22,34 @@ function Sidebar() {
     {
       text: "Current Reservations",
       icon: <SupportAgentIcon />,
-      link: "/example/current-reservations",
+      link: "/current-reservations",
     },
     {
       text: "Traveler Management",
       icon: <CardGiftcardIcon />,
-      link: "/example/traveler-management",
+      link: "/traveler-management",
     },
-    {
-      text: "Train Management",
-      icon: <StarRateIcon />,
-      link: "/example/train-management",
-    },
-    // Conditionally add User Management item if role equals '1'
+    // Conditionally add Train Management item if role equals '2' backOffice
+    ...(role === "2" || role === "3"
+      ? [
+          {
+            text: "Train Management",
+            icon: <StarRateIcon />,
+            link: "/train-management",
+          },
+        ]
+      : []),
+    // Conditionally add User Management item if role equals '3' admin
     ...(role === "3"
       ? [
           {
             text: "User Management",
             icon: <SettingsIcon />,
-            link: "/example/user-management",
+            link: "/user-management",
           },
         ]
       : []),
-    // { text: 'Sign Out', icon: <LogoutIcon />, link: '/example/sign-out' }
+    // { text: 'Sign Out', icon: <LogoutIcon />, link: '/sign-out' }
   ];
 
   return (
