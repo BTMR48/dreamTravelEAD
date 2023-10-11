@@ -321,8 +321,6 @@ function TravelerManagement() {
   }
 
   async function handleUpdateTraveler() {
-    console.log("update called");
-
     try {
       if (!validateName() || !validateEmail() || !validateDob()) {
         return; // stop here if there are validation errors
@@ -341,7 +339,6 @@ function TravelerManagement() {
         travelerData,
         config
       );
-      console.log(response);
       if (response.status === 200) {
         alert("Traveler updated successfully!");
 
@@ -392,6 +389,19 @@ function TravelerManagement() {
     return `${year}/${month}/${day}`;
   }
 
+  const handleCloseModal = () => {
+    if (isEditing) {
+      setIsEditing(false);
+      // Reset input fields
+      setUserNic("");
+      setUserName("");
+      setUserEmail("");
+      setUserDateOfBirth("");
+      setUserPassword("");
+    }
+    setOpenModal(false);
+  };
+
   return (
     <Paper elevation={3} style={{ flex: 1, padding: "10px", margin: "10px" }}>
       <Typography variant="h5" component="h4" className="user-management-title">
@@ -416,6 +426,7 @@ function TravelerManagement() {
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>DOB</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -427,6 +438,9 @@ function TravelerManagement() {
                 <TableCell>{traveler.email}</TableCell>
                 <TableCell>
                   {formatDateToYYYYMMDD(traveler.dateOfBirth)}
+                </TableCell>
+                <TableCell>
+                  {traveler.isActive ? "Active" : "Inactive"}
                 </TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleEditTraveler(traveler)}>
@@ -525,7 +539,7 @@ function TravelerManagement() {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenModal(false)} color="primary">
+          <Button onClick={handleCloseModal} color="primary">
             Cancel
           </Button>
           <Button

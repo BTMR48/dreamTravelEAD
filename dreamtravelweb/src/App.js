@@ -16,6 +16,8 @@ import Login from "./pages/Login/Login";
 import MakeReservation from "./pages/MakeReservation/MakeReservation";
 import UserManagement from "./pages/UserManagement/UserManagement";
 import TravelerManagement from "./pages/TravelerManagement/TravelerManagement";
+import TrainManagement from "./pages/TrainManagement/TrainManagement";
+import CurrentReservations from "./pages/CurrentReservations/CurrentReservations";
 
 function App() {
   // const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
@@ -34,6 +36,8 @@ function App() {
             <PrivateRoute exact path="/" component={MakeReservation} />
             <PrivateRoute exact path="/user-management" component={UserManagement} />
             <PrivateRoute exact path="/traveler-management" component={TravelerManagement} />
+            <PrivateRoute exact path="/train-management" component={TrainManagement} />
+            <PrivateRoute exact path="/current-reservations" component={CurrentReservations} />
         </div>
         <Footer />
 
