@@ -9,6 +9,7 @@ import "./Header.css";
 function Header() {
   const history = useHistory();
 
+  //Logout function
   const onLogout = () => {
     const isConfirmed = window.confirm("Are you sure you want to log out?");
 

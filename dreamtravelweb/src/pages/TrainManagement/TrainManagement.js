@@ -54,6 +54,7 @@ function TrainManagement() {
   const [trainIdError, setTrainIdError] = useState("");
   const [trainNameError, setTrainNameError] = useState("");
 
+  //Input validations for trains
   const validateInputs = () => {
     let isValid = true;
 
@@ -81,130 +82,7 @@ function TrainManagement() {
     },
   };
 
-  useEffect(() => {
-    async function fetchTrains() {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/Trains",
-          config
-        );
-        setTrains(response.data);
-      } catch (error) {
-        alert("Failed to fetch trains");
-        console.error("Error fetching trains:", error);
-      }
-    }
-
-    fetchTrains();
-  }, []);
-
-  const fetchSchedule = async (trainId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/schedules/train/${trainId}`,
-        config
-      );
-      return response.data;
-    } catch (error) {
-      alert("Failed to fetch schedule");
-      console.error("Error fetching schedules for train:", error);
-    }
-    return [];
-  };
-
-  const handleExpandClick = async (trainId) => {
-    if (openRow === trainId) {
-      setOpenRow(null);
-    } else {
-      const schedules = await fetchSchedule(trainId);
-      setTrains((prevTrains) =>
-        prevTrains.map((train) =>
-          train.id === trainId ? { ...train, schedules } : train
-        )
-      );
-      setOpenRow(trainId);
-    }
-  };
-
-  const handleAddTrain = async () => {
-    if (validateInputs()) {
-      try {
-        const newTrain = {
-          id: trainId,
-          name: trainName,
-          isPublished: false,
-        };
-
-        const response = await axios.post(
-          "http://localhost:5000/api/Trains",
-          newTrain,
-          config
-        );
-
-        if (response.status === 200 || response.status === 201) {
-          alert("Train added successfully!");
-          setOpenModal(false);
-          setTrainId("");
-          setTrainName("");
-          setTrains((prevTrains) => [...prevTrains, newTrain]);
-        }
-      } catch (error) {
-        if (error.response.status == 500) {
-          alert(error.response.data.details);
-        } else {
-          alert("Failed to add train");
-        }
-        console.error("Error adding train:", error);
-      }
-    }
-  };
-
-  const handleAddSchedule = async () => {
-    if (validateScheduleInputs()) {
-      const newSchedule = {
-        id: Number(scheduleId),
-        departureTime: convertTo12HourFormat(departureTime),
-        arrivalTime: convertTo12HourFormat(arrivalTime),
-        startStation: startStation,
-        stoppingStation: stoppingStation,
-        availableCount: 0,
-        reservationCount: 0,
-        train: {
-          id: currentTrainId,
-          name: trains.find((t) => t.id === currentTrainId).name,
-          isPublished: true,
-        },
-      };
-
-      try {
-        const response = await axios.post(
-          `http://localhost:5000/api/schedules/${currentTrainId}`,
-          newSchedule,
-          config
-        );
-
-        if (response.status === 200 || response.status === 201) {
-          alert("Schedule added successfully!");
-          setOpenScheduleModal(false);
-
-          // Reset Fields
-          setScheduleId("");
-          setDepartureTime("");
-          setArrivalTime("");
-          setStartStation("");
-          setStoppingStation("");
-        }
-      } catch (error) {
-        if (error.response.status == 400) {
-          alert(error.response.data);
-        } else {
-          alert("Failed to add schedule");
-        }
-        console.error("Error adding schedule:", error);
-      }
-    }
-  };
-
+  //Input validation of schedule form
   const validateScheduleInputs = () => {
     let isValid = true;
 
@@ -264,32 +142,8 @@ function TrainManagement() {
     return isValid;
   };
 
-  async function handlePublishTrain(id) {
-    try {
-      const isConfirmed = window.confirm(
-        "Are you sure you want to publish this Train?"
-      );
-      if (isConfirmed) {
-        const response = await axios.patch(
-          `http://localhost:5000/api/Trains/${id}/activate`,
-          {},
-          config
-        );
-        if (response.status === 200) {
-          setTrains((prev) =>
-            prev.map((item) =>
-              item.id === id ? { ...item, isPublished: true } : item
-            )
-          );
-        }
-      }
-    } catch (error) {
-      console.error("Error publishing Train:", error);
-      alert("Failed to publish Train.");
-    }
-  }
-
-  const validateUpdateScheduleInputs = () => {
+   //Input validations for update schedule form
+   const validateUpdateScheduleInputs = () => {
     let isValid = true;
 
     // Check for departure time
@@ -331,6 +185,136 @@ function TrainManagement() {
     return isValid;
   };
 
+  //Fetch all trains
+  useEffect(() => {
+    async function fetchTrains() {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/Trains",
+          config
+        );
+        setTrains(response.data);
+      } catch (error) {
+        alert("Failed to fetch trains");
+        console.error("Error fetching trains:", error);
+      }
+    }
+
+    fetchTrains();
+  }, []);
+
+  //Fetch schedules of a train
+  const fetchSchedule = async (trainId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/schedules/train/${trainId}`,
+        config
+      );
+      return response.data;
+    } catch (error) {
+      alert("Failed to fetch schedule");
+      console.error("Error fetching schedules for train:", error);
+    }
+    return [];
+  };
+
+  //When expand button is clicked
+  const handleExpandClick = async (trainId) => {
+    if (openRow === trainId) {
+      setOpenRow(null);
+    } else {
+      const schedules = await fetchSchedule(trainId);
+      setTrains((prevTrains) =>
+        prevTrains.map((train) =>
+          train.id === trainId ? { ...train, schedules } : train
+        )
+      );
+      setOpenRow(trainId);
+    }
+  };
+
+  //Add a train
+  const handleAddTrain = async () => {
+    if (validateInputs()) {
+      try {
+        const newTrain = {
+          id: trainId,
+          name: trainName,
+          isPublished: false,
+        };
+
+        const response = await axios.post(
+          "http://localhost:5000/api/Trains",
+          newTrain,
+          config
+        );
+
+        if (response.status === 200 || response.status === 201) {
+          alert("Train added successfully!");
+          setOpenModal(false);
+          setTrainId("");
+          setTrainName("");
+          setTrains((prevTrains) => [...prevTrains, newTrain]);
+        }
+      } catch (error) {
+        if (error.response.status == 500) {
+          alert(error.response.data.details);
+        } else {
+          alert("Failed to add train");
+        }
+        console.error("Error adding train:", error);
+      }
+    }
+  };
+
+  //Add a schedule for a train
+  const handleAddSchedule = async () => {
+    if (validateScheduleInputs()) {
+      const newSchedule = {
+        id: Number(scheduleId),
+        departureTime: convertTo12HourFormat(departureTime),
+        arrivalTime: convertTo12HourFormat(arrivalTime),
+        startStation: startStation,
+        stoppingStation: stoppingStation,
+        availableCount: 0,
+        reservationCount: 0,
+        train: {
+          id: currentTrainId,
+          name: trains.find((t) => t.id === currentTrainId).name,
+          isPublished: true,
+        },
+      };
+
+      try {
+        const response = await axios.post(
+          `http://localhost:5000/api/schedules/${currentTrainId}`,
+          newSchedule,
+          config
+        );
+
+        if (response.status === 200 || response.status === 201) {
+          alert("Schedule added successfully!");
+          setOpenScheduleModal(false);
+
+          // Reset Fields
+          setScheduleId("");
+          setDepartureTime("");
+          setArrivalTime("");
+          setStartStation("");
+          setStoppingStation("");
+        }
+      } catch (error) {
+        if (error.response.status == 400) {
+          alert(error.response.data);
+        } else {
+          alert("Failed to add schedule");
+        }
+        console.error("Error adding schedule:", error);
+      }
+    }
+  };
+
+  //When schedule update buttom is clicked
   const handleEditScheduleClick = (schedule) => {
     console.log(schedule);
     setIsEditingSchedule(true);
@@ -342,6 +326,7 @@ function TrainManagement() {
     setStoppingStation(schedule.stoppingStation);
   };
 
+  //Update a schedule
   const handleUpdateSchedule = async () => {
     if (validateUpdateScheduleInputs()) {
       const updatedSchedule = {
@@ -382,6 +367,33 @@ function TrainManagement() {
     }
   };
 
+   //Publish a train
+   async function handlePublishTrain(id) {
+    try {
+      const isConfirmed = window.confirm(
+        "Are you sure you want to publish this Train?"
+      );
+      if (isConfirmed) {
+        const response = await axios.patch(
+          `http://localhost:5000/api/Trains/${id}/activate`,
+          {},
+          config
+        );
+        if (response.status === 200) {
+          setTrains((prev) =>
+            prev.map((item) =>
+              item.id === id ? { ...item, isPublished: true } : item
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error publishing Train:", error);
+      alert("Failed to publish Train.");
+    }
+  }
+
+  //Unpublish a train
   async function handleUnpublishTrain(id) {
     try {
       const isConfirmed = window.confirm(
@@ -407,6 +419,7 @@ function TrainManagement() {
     }
   }
 
+   //Convert time to 12 hour format
   const convertTo12HourFormat = (time) => {
     let hour = parseInt(time.split(":")[0]);
     let min = time.split(":")[1];
@@ -418,6 +431,7 @@ function TrainManagement() {
     return `${String(hour).padStart(2, "0")}:${min} ${ampm}`;
   };
 
+  //Convert time to 24 hour format
   const convertTo24HourFormat = (timeStr) => {
     const [time, period] = timeStr.split(" ");
     let [hours, minutes] = time.split(":");
@@ -432,6 +446,7 @@ function TrainManagement() {
     return `${String(hours).padStart(2, "0")}:${minutes}`;
   };
 
+  //Reset states
   const resetErrors = () => {
     setTrainIdError("");
     setTrainNameError("");
@@ -621,7 +636,7 @@ function TrainManagement() {
         open={openScheduleModal}
         onClose={() => setOpenScheduleModal(false)}
       >
-        <DialogTitle>Add New Schedule</DialogTitle>
+        <DialogTitle>{isEditingSchedule ? "Update Schedule" : "Add New Schedule"}</DialogTitle>
         <DialogContent>
           {!isEditingSchedule && (
             <TextField

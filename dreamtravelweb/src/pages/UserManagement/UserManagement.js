@@ -38,6 +38,7 @@ function UserManagement() {
   const [emailError, setEmailError] = useState("");
   const [roleError, setRoleError] = useState("");
 
+  //Input nic validation
   function validateNic() {
     const nicpattern = /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/m;
     if (!userNic.trim()) {
@@ -51,6 +52,7 @@ function UserManagement() {
     return true;
   }
 
+  //Input email validation
   function validateEmail() {
     // Basic email regex pattern
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -66,6 +68,7 @@ function UserManagement() {
     return true;
   }
 
+  //Input password validation
   function validatePassword() {
     if (!userPassword) {
       setPasswordError("Password is required.");
@@ -78,6 +81,7 @@ function UserManagement() {
     return true;
   }
 
+  //Input role validation
   function validateRole() {
     if (![1, 2].includes(userRole)) {
       setRoleError("Invalid role selected.");
@@ -94,6 +98,7 @@ function UserManagement() {
     },
   };
 
+  //Fetch all users 
   useEffect(() => {
     async function fetchUsers() {
       try {
@@ -112,6 +117,7 @@ function UserManagement() {
     fetchUsers();
   }, []);
 
+  //Add user
   async function handleAddUser() {
     if (
       !validateNic() ||
@@ -166,6 +172,7 @@ function UserManagement() {
     }
   }
 
+  //Delete user
   async function deleteUser(nic) {
     try {
       const isConfirmed = window.confirm(
@@ -193,6 +200,7 @@ function UserManagement() {
     }
   }
 
+  //Assign role names based on int
   function getRoleName(role) {
     switch (role) {
       case 0:
@@ -241,11 +249,7 @@ function UserManagement() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{getRoleName(user.role)}</TableCell>
                 <TableCell>
-                  {user.role === 3 ? (
-                    <IconButton disabled className="delete-icon">
-                      <DeleteIcon color="disabled" />
-                    </IconButton>
-                  ) : (
+                  {!(user.role === 3) &&  (
                     <IconButton
                       onClick={() => deleteUser(user.nic)}
                       className="delete-icon"

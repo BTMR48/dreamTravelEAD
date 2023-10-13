@@ -49,6 +49,7 @@ function TravelerManagement() {
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
 
+  //Inout nic validation
   function validateNic() {
     const nicpattern = /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/m;
     if (!userNic.trim()) {
@@ -62,6 +63,7 @@ function TravelerManagement() {
     return true;
   }
 
+  //Inout name validation
   function validateName() {
     if (!userName.trim()) {
       setNameError("Name is required.");
@@ -71,6 +73,7 @@ function TravelerManagement() {
     return true;
   }
 
+  //Inout DOB validation
   function validateDob() {
     if (!userDateOfBirth) {
       setDobError("Date of Birth is required.");
@@ -93,6 +96,7 @@ function TravelerManagement() {
     return true;
   }
 
+  //Inout email validation
   function validateEmail() {
     // Basic email regex pattern
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -108,6 +112,7 @@ function TravelerManagement() {
     return true;
   }
 
+  //Inout password validation
   function validatePassword() {
     if (!userPassword) {
       setPasswordError("Password is required.");
@@ -127,6 +132,7 @@ function TravelerManagement() {
     },
   };
 
+  //Fetch all travelers
   useEffect(() => {
     async function fetchTravelers() {
       try {
@@ -146,6 +152,7 @@ function TravelerManagement() {
     fetchTravelers();
   }, []);
 
+  //Add a traveler
   async function handleAddTraveler() {
     if (
       !validateNic() ||
@@ -221,6 +228,7 @@ function TravelerManagement() {
     }
   }
 
+  //Delete a traveler
   async function deleteTraveler(nic) {
     try {
       const isConfirmed = window.confirm(
@@ -257,6 +265,7 @@ function TravelerManagement() {
     }
   }
 
+  //Activate a traveler
   async function handleActivateTraveler(nic) {
     try {
       const isConfirmed = window.confirm(
@@ -282,6 +291,7 @@ function TravelerManagement() {
     }
   }
 
+  //Deactivate a traveler
   async function handleDeactivateTraveler(nic) {
     try {
       const isConfirmed = window.confirm(
@@ -307,6 +317,7 @@ function TravelerManagement() {
     }
   }
 
+  //When edit button is clicked
   function handleEditTraveler(traveler) {
     setID(traveler.id);
     setUserNic(traveler.nic);
@@ -320,6 +331,7 @@ function TravelerManagement() {
     setOpenModal(true);
   }
 
+  //Update traveler
   async function handleUpdateTraveler() {
     try {
       if (!validateName() || !validateEmail() || !validateDob()) {
@@ -375,11 +387,13 @@ function TravelerManagement() {
     }
   }
 
+  //Convert the date into ISO format
   function formatDateToISO(inputDate) {
     const date = new Date(inputDate);
     return date.toISOString();
   }
 
+  //Format the date into YYYY:MM:DD
   function formatDateToYYYYMMDD(inputDate) {
     const date = new Date(inputDate);
     const year = date.getFullYear();
@@ -389,6 +403,7 @@ function TravelerManagement() {
     return `${year}/${month}/${day}`;
   }
 
+  //When modal is closed
   const handleCloseModal = () => {
     if (isEditing) {
       setIsEditing(false);
@@ -473,7 +488,7 @@ function TravelerManagement() {
         </Table>
       </TableContainer>
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-        <DialogTitle>{isEditing ? "Update User" : "Add User"}</DialogTitle>
+        <DialogTitle>{isEditing ? "Update Traveler" : "Add Traveler"}</DialogTitle>
         <DialogContent>
           {!isEditing && (
             <TextField

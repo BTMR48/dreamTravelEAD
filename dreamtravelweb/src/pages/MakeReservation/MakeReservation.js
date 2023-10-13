@@ -33,6 +33,7 @@ function MakeReservation() {
   const [reservationDateError, setReservationDateError] = useState("");
   const [seatCountError, setSeatCountError] = useState("");
 
+  //Input validations
   const validateInputs = () => {
     let isValid = true;
 
@@ -84,6 +85,7 @@ function MakeReservation() {
     },
   };
 
+  //Fetch all travelers
   useEffect(() => {
     async function fetchTravelers() {
       try {
@@ -101,6 +103,7 @@ function MakeReservation() {
     fetchTravelers();
   }, []);
 
+  //Fetch published trains
   useEffect(() => {
     async function fetchSchedules() {
       try {
@@ -118,11 +121,13 @@ function MakeReservation() {
     fetchSchedules();
   }, []);
 
+  //when reserve button is clicked
   const handleReserve = (schedule) => {
     setCurrentSchedule(schedule);
     setOpenModal(true);
   };
 
+  //Add booking
   const addBooking = async () => {
     if (validateInputs()) {
       try {

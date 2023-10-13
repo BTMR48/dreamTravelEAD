@@ -11,6 +11,7 @@ function Login() {
   
   const history = useHistory();
 
+  //Login
   async function handleLogin(event) {
     event.preventDefault();
 
@@ -41,7 +42,7 @@ function Login() {
         "content-Type": "application/json",
       },
     };
-    console.log(nic, password);
+
     try {
       const { data } = await axios.post(
         "http://localhost:5000/api/Users/login",
@@ -49,10 +50,15 @@ function Login() {
         config
       );
 
+      if (data.role === 0) {
+        alert("Access denied. You do not have the necessary permissions to login.");
+        setNic("");
+        setPassword("");
+        return; 
+      }
       //setting the patient authorization token
       localStorage.setItem("authToken", data.token);
-      // localStorage.setItem("role", data.role);
-      localStorage.setItem("role", 3);
+      localStorage.setItem("role", data.role);
 
       history.push("/");
     } catch (error) {

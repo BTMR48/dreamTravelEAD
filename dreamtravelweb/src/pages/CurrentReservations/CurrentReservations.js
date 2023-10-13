@@ -32,6 +32,7 @@ function CurrentReservations() {
   const [reservationDateError, setReservationDateError] = useState("");
   const [seatCountError, setSeatCountError] = useState("");
 
+  //Input Validations
   const validateInputs = () => {
     let isValid = true;
 
@@ -74,6 +75,7 @@ function CurrentReservations() {
     },
   };
 
+  //Fetch all bookings
   useEffect(() => {
     async function fetchBookings() {
       try {
@@ -91,27 +93,7 @@ function CurrentReservations() {
     fetchBookings();
   }, []);
 
-  //   const deleteBooking = async (bookingID) => {
-  //     const isConfirmed = window.confirm(
-  //       "Are you sure you want to delete this booking?"
-  //     );
-  //     if (isConfirmed) {
-  //       try {
-  //         await axios.delete(
-  //           `http://localhost:5000/api/Bookings/${bookingID}`,
-  //           config
-  //         );
-  //         setBookings((prevBookings) =>
-  //           prevBookings.filter((booking) => booking.bookingID !== bookingID)
-  //         );
-  //         alert("Booking deleted successfully!");
-  //       } catch (error) {
-  //         alert("Error deleting booking");
-  //         console.error("Error deleting booking:", error);
-  //       }
-  //     }
-  //   };
-
+  //When edit button is clicked
   const handleOpenEditModal = (booking) => {
     const formattedDate = new Date(booking.reservationDate)
       .toISOString()
@@ -122,6 +104,7 @@ function CurrentReservations() {
     setEditModalOpen(true);
   };
 
+  //Update booking
   const handleUpdateBooking = async () => {
     if (!validateInputs()) {
       return;
@@ -157,6 +140,7 @@ function CurrentReservations() {
     }
   };
 
+  //Eligibility check to update or cancel bookings 
   const canCancelEditBooking = (reservationDate) => {
     const now = new Date();
     const reservation = new Date(reservationDate);
@@ -165,6 +149,7 @@ function CurrentReservations() {
     return dayDiff >= 5;
   };
 
+  //Cancel booking
   const handleCancel = async (bookingID) => {
     if (window.confirm("Are you sure you want to cancel this booking?")) {
       try {
