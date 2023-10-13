@@ -150,9 +150,9 @@ function UserManagement() {
         setUsers((prevUsers) => [
           ...prevUsers,
           {
-            id: response.data.id, // If the API returns the new user's ID, use it. Otherwise, use an empty string.
+            id: response.data.id, 
             nic: userNic,
-            role: userRole, // Assuming this is constant for all new users
+            role: userRole, 
             email: userEmail,
           },
         ]);

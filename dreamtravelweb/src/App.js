@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
 } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -20,7 +19,6 @@ import TrainManagement from "./pages/TrainManagement/TrainManagement";
 import CurrentReservations from "./pages/CurrentReservations/CurrentReservations";
 
 function App() {
-  // const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
 
   return (
     <div className="app">
