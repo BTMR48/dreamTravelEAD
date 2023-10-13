@@ -85,7 +85,7 @@ function MakeReservation() {
     },
   };
 
-  //Fetch all travelers
+  //Fetch travelers and filter active ones
   useEffect(() => {
     async function fetchTravelers() {
       try {
@@ -93,7 +93,7 @@ function MakeReservation() {
           "http://localhost:5000/api/Travelers",
           config
         );
-        setTravelers(response.data);
+        setTravelers(response.data.filter(traveler => traveler.isActive === true));
       } catch (error) {
         alert("Error fetching travelers");
         console.error("Error fetching travelers:", error);
